@@ -1,5 +1,19 @@
 import matplotlib.pyplot as plt
+from scipy.signal import butter, lfilter, iirnotch
 import numpy as np
+
+def notch_filter(data, freq, fs, q=30):
+    w0 = freq/(fs/2)
+    b, a = iirnotch(w0, q)
+    y = lfilter(b, a, data)
+    return y
+
+def low_pass_filter(data, cutoff, fs, order=5):
+    nyq = fs/2
+    normal_cutoff = cutoff / nyq
+    b, a = butter(order, normal_cutoff, btype='low', analog=False)
+    y = lfilter(b, a, data)
+    return y
 
 
 ##########################
@@ -85,4 +99,27 @@ plt.plot(X3)
 plt.xlabel("Frequencia [Hz]")
 plt.title("FFT de $x_3(t) = ( cos(2\pi"+str(f)+"\cdot t) + cos(2\pi60\cdot t) )$ com Fs = "+str(fs2)+" Hz")
 
+
+#############################
+#### Desafio: Filtragem #####
+#############################
+
+#filt_y3 = notch_filter(y3, 60.0, fs2, q=150)
+filt_y3 = low_pass_filter(y3, 40, fs2, order=20)
+
+plt.figure()
+plt.stem(x3,filt_y3, linefmt='b-', markerfmt='b.', basefmt='b-')
+plt.plot(x3,filt_y3)
+plt.xlabel("Tempo [s]")
+
+#FFT do modulo de x3(t)
+filt_X3 = np.abs(np.fft.fft(filt_y3))
+#Descarta metade simetrica da FFT
+#filt_X3 = filt_X3[0:int(np.ceil(filt_X3.size/2))]
+#Plota grafico
+plt.figure()
+plt.plot(filt_X3)
+plt.xlabel("Frequencia [Hz]")
+
+#Mostra todos os graficos
 plt.show()

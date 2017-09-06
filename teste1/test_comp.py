@@ -51,4 +51,38 @@ plt.plot(x3,y3)
 plt.xlabel("Tempo [s]")
 plt.title("$x_3(t) = ( cos(2\pi"+str(f)+"\cdot t) + cos(2\pi60\cdot t) )$ com Fs = "+str(fs2)+" Hz")
 
+########################
+#### Ex2: Espectro #####
+########################
+
+#FFT do modulo de x1(t)
+X1 = np.abs(np.fft.fft(y1))
+#Descarta metade simetrica da FFT
+#X1 = X1[0:int(np.ceil(X1.size/2))]
+#Plota grafico
+plt.figure()
+plt.plot(X1)
+plt.xlabel("Frequencia [Hz]")
+plt.title("FFT de $x_1(t) = cos(2\pi"+str(f)+"\cdot t)$ com Fs = "+str(fs1)+" Hz")
+
+#FFT do modulo de x2(t)
+X2 = np.abs(np.fft.fft(y2))
+#Descarta metade simetrica da FFT
+#X2 = X2[0:int(np.ceil(X2.size/2))]
+#Plota grafico
+plt.figure()
+plt.plot(X2)
+plt.xlabel("Frequencia [Hz]")
+plt.title("FFT de $x_2(t) = cos(2\pi"+str(f)+"\cdot t)$ com Fs = "+str(fs2)+" Hz")
+
+#FFT do modulo de x3(t)
+X3 = np.abs(np.fft.fft(y3))
+#Descarta metade simetrica da FFT
+#X3 = X3[0:int(np.ceil(X3.size/2))]
+#Plota grafico
+plt.figure()
+plt.plot(X3)
+plt.xlabel("Frequencia [Hz]")
+plt.title("FFT de $x_3(t) = ( cos(2\pi"+str(f)+"\cdot t) + cos(2\pi60\cdot t) )$ com Fs = "+str(fs2)+" Hz")
+
 plt.show()

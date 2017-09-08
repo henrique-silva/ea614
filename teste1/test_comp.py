@@ -99,6 +99,24 @@ plt.plot(X3)
 plt.xlabel("Frequencia [Hz]")
 plt.title("FFT de $x_3(t) = ( cos(2\pi"+str(f)+"\cdot t) + cos(2\pi60\cdot t) )$ com Fs = "+str(fs2)+" Hz")
 
+fig, axarr = plt.subplots(2,2)
+
+fig.subplots_adjust(hspace=0.6)
+for j in range(1,5):
+    x_n = np.arange(j*100)/float(j*100)
+    y2_n = [ np.cos(2*np.pi*f * i) for i in x_n]
+    y4_n = [ np.cos(2*np.pi*60 * i) for i in x_n]
+    y_n = np.add(y2_n, y4_n)
+    Y_n = np.abs(np.fft.fft(y_n))
+    Y_n = Y_n[0:int(np.ceil(Y_n.size/2))]
+
+    ax = axarr[(j-1)/2, (j-1)%2]
+    ax.plot(Y_n)
+    ax.set_title("Fs = "+str(j*100)+" Hz")
+    ax.set_xlabel("Frequencia [Hz]")
+
+
+plt.suptitle("FFT de $x_3(t) = ( cos(2\pi"+str(f)+"\cdot t) + cos(2\pi60\cdot t) )$ com diferentes valores de Fs")
 
 #############################
 #### Desafio: Filtragem #####

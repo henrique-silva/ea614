@@ -37,26 +37,6 @@ def codifica( palavra ):
             return
     return buf
 
-
-#Deteccao de pico: https://dsp.stackexchange.com/questions/22923/dominating-frequency-in-a-clear-50-hz-signal
-def decodifica_fft( buf ):
-    palavra = []
-    split_buf = np.reshape(buf, (4, len(buf)/4))
-    for letra in split_buf:
-        fft_letra = np.fft.fft(letra)
-        freqs = np.fft.fftfreq(len(letra),(1/Fs))
-        freqs = freqs[np.where(freqs >= 0)]
-        mag = np.abs(fft_letra[np.where(freqs >= 0)])
-        peak = np.argmax(mag)
-        print('Pico: '+str(peak)+' Hz')
-        if peak == f:
-            palavra.append('M')
-        elif peak == (2*f):
-            palavra.append('O')
-        else:
-            print('[ERRO] Frequencia nao indexada: '+str(peak)+' Hz')
-    return ''.join(palavra)
-
 def decodifica( buf ):
     palavra = []
     split_buf = np.reshape(buf, (4, len(buf)/4))

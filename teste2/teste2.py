@@ -72,21 +72,28 @@ def decodifica( buf ):
             palavra.append("_")
     return ''.join(palavra)
 
-#Ruido Branco
-noise = np.random.normal(0, 1, size=4000)/1.44
+def SNR( sinal ):
+    #Gera Ruido Branco de referencia
+    ruido = np.random.normal(0, args.noise_std, size=len(sinal))
+    #Calcula a potencia do pico da FFT
+    Psinal = np.amax(20*np.log10(np.abs(np.fft.rfft(sinal))))
+    #Calcula a potencia do ruido
+    Pruido = np.mean(20*np.log10(np.abs(np.fft.rfft(ruido))))
+    return Psinal-Pruido
 
-#Cria todas a permutacoes possiveis dos simbolos
-permut = list(itertools.permutations(list('LOMA')))
-permut = [ ''.join(palavra) for palavra in permut]
 
-#Codifica todas as palavras
-permut_cod = [ codifica(palavra) for palavra in permut ]
+############## Teste de Permutacoes #####################
+###Cria todas a permutacoes possiveis dos simbolos
+##permut = list(itertools.permutations(codigos.keys()))
+##permut = [ ''.join(palavra) for palavra in permut]
+##args.palavras.extend(permut)
 
 
 for item in args.palavras:
     item_cod = codifica(item)
     result_decod = decodifica(item_cod)
     print('Palavra decodificada: '+result_decod),
+    print('SNR: {} dB'.format(SNR(item_cod)))
     if args.plot:
         plt.figure()
         plt.plot(item_cod)
